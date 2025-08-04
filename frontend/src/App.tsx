@@ -1,28 +1,48 @@
-import {useState} from 'react';
-import logo from './assets/images/logo-universal.png';
-import './App.css';
-import {Greet} from "../wailsjs/go/main/App";
+import { useEffect, useState } from 'react'
+import './App.css'
+import { fetchTopAiring, type AnilistMedia} from './api/airing'
+import LatestTrackingSection from './latestTracking'
 
 function App() {
-    const [resultText, setResultText] = useState("Please enter your name below 👇");
-    const [name, setName] = useState('');
-    const updateName = (e: any) => setName(e.target.value);
-    const updateResultText = (result: string) => setResultText(result);
+  const [tracking, setTracking] = useState(Array<AnilistMedia>)
+  const [airing, setAiring] = useState(Array<AnilistMedia>)
+  const [currentPageNumber, setCurrentPageNumber] = useState(1)
+  useEffect(() => {
+      const fetchData = async () => {
+        try {
+          let results = await fetchTopAiring(currentPageNumber)
+          if (results) {
+            setCurrentPageNumber(results.data.Page.pageInfo.currentPage)
+          }
+          if (results && results.data.Page.media.length > 0) {
+            setAiring([...airing, ...results.data.Page.media])
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      fetchData()
+  }, [])
 
-    function greet() {
-        Greet(name).then(updateResultText);
-    }
-
-    return (
-        <div id="App">
-            <img src={logo} id="logo" alt="logo"/>
-            <div id="result" className="result">{resultText}</div>
-            <div id="input" className="input-box">
-                <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text"/>
-                <button className="btn" onClick={greet}>Greet</button>
-            </div>
-        </div>
-    )
+  const onAddTrackingBtnClick = (series:AnilistMedia) => {
+    console.log(series.id)
+    setTracking([...tracking, series])
+  }
+  return (
+    <div>
+      <LatestTrackingSection tracking={tracking}/>
+      <div>Top Airing This Season</div>
+      <div className='airing-this-season'>
+        {airing.map(series => (
+          <div key={series.id} className='series-container'>
+            <img src={series.coverImage.large} className='series-cover'/>
+            <button onClick={()=>onAddTrackingBtnClick(series)}>Add To Tracking</button>
+            <div className='series-title'>{series.title.english ? series.title.english : series.title.romaji}</div>
+          </div>
+        )
+        )}
+      </div>
+    </div>
+  )
 }
-
 export default App
