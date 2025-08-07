@@ -63,7 +63,7 @@ func getTrackedAnimeAll(db *sql.DB) ([]TrackedAnimeTableRow, error) {
 	}
 	defer rows.Close()
 
-	var trackedAnimeList []TrackedAnimeTableRow
+	var trackedAnimeList []TrackedAnimeTableRow = []TrackedAnimeTableRow{} //init empty array so we can return empty instead of nil (causes error in frontend)
 	for rows.Next() {
 		var t TrackedAnimeTableRow
 		if err := rows.Scan(&t.Anilist_id); err != nil {

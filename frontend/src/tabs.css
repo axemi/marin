@@ -1,0 +1,15 @@
+.tab-header {
+    width: 200px;
+    background: none;
+}
+
+.tab-header-section {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding-bottom: 30px;
+}
+
+.tab-header-active {
+    border-bottom: 1px solid whitesmoke;
+}
