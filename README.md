@@ -1,6 +1,6 @@
-# README
+anime tracker
 
-## About
+## About (Wails)
 
 This is the official Wails React-TS template.
 
