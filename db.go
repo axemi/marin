@@ -34,29 +34,35 @@ func createTestTable(db *sql.DB) error {
 }
 
 type TrackedAnimeTableRow struct {
-	Anilist_id int
+	Anilist_id   int
+	Cover_img    string
+	Eng_title    string
+	Romaji_title string
 }
 
 func createTrackedAnimeTable(db *sql.DB) error {
 	log.Print("creating tracked_anime table in local database")
 	_, err := db.Exec(`
 	CREATE TABLE IF NOT EXISTS tracked_anime (
-	anilist_id INTEGER
+	anilist_id INTEGER,
+	cover_img TEXT,
+	eng_title TEXT,
+	romaji_title TEXT
 	);
 	`)
 	return err
 }
 
-func insertTrackedAnime(db *sql.DB, anilist_id int) error {
+func insertTrackedAnime(db *sql.DB, anilist_id int, cover_img, eng_title, romaji_title string) error {
 	log.Printf("inserting %v into tracked_anime table", anilist_id)
-	query := "INSERT INTO tracked_anime (anilist_id) VALUES (?);"
+	query := "INSERT OR IGNORE INTO tracked_anime (anilist_id, cover_img, eng_title, romaji_title) VALUES (?,?,?,?);"
 
-	_, err := db.Exec(query, anilist_id)
+	_, err := db.Exec(query, anilist_id, cover_img, eng_title, romaji_title)
 	return err
 }
 
 func getTrackedAnimeAll(db *sql.DB) ([]TrackedAnimeTableRow, error) {
-	query := "SELECT anilist_id FROM tracked_anime"
+	query := "SELECT * FROM tracked_anime"
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
@@ -66,7 +72,7 @@ func getTrackedAnimeAll(db *sql.DB) ([]TrackedAnimeTableRow, error) {
 	var trackedAnimeList []TrackedAnimeTableRow = []TrackedAnimeTableRow{} //init empty array so we can return empty instead of nil (causes error in frontend)
 	for rows.Next() {
 		var t TrackedAnimeTableRow
-		if err := rows.Scan(&t.Anilist_id); err != nil {
+		if err := rows.Scan(&t.Anilist_id, &t.Cover_img, &t.Eng_title, &t.Romaji_title); err != nil {
 			return nil, err
 		}
 		trackedAnimeList = append(trackedAnimeList, t)

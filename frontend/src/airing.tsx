@@ -9,7 +9,7 @@ export function AiringAnimeList() {
     const onAddTrackingBtnClick = async (series:AnilistMedia) => {
         try {
           console.log(series.id)
-          if (series && series.id != undefined) await InsertTrackedAnime(series.id)
+          if (series && series.id != undefined) await InsertTrackedAnime(series.id, series.coverImage.large, series.title.english, series.title.romaji)
         } catch (error) {
           console.log(error)
         }

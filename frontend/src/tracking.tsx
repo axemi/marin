@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { main } from "../wailsjs/go/models"
 import { GetTrackedAnimeAll } from "../wailsjs/go/main/App"
+// import { getAnimeDataMultiple } from "./api/tracking"
 
 export function TrackedAnimeList(/*{tracking}:props*/) {
     const [trackedAnime, setTrackedAnime] = useState(Array<main.TrackedAnimeTableRow>)
@@ -17,12 +18,19 @@ export function TrackedAnimeList(/*{tracking}:props*/) {
 
     useEffect(()=>{
         fetchTrackedAnime()
+        // const q = getAnimeDataMultiple([1,2,3])
+        // console.log(q)
     }, [])
     return (
         <div>
-            <div>Tracked Anime List WIP</div>
-            <div>
-                {trackedAnime.length == 0 ? <div>Not tracking any anime</div>: trackedAnime.map(ta => <div key={ta.Anilist_id}>{ta.Anilist_id}</div>)}
+            <div className="tracking-anime-list">
+                {/* {trackedAnime.length == 0 ? <div>Not tracking any anime</div>: trackedAnime.map(ta => <div key={ta.Anilist_id}>{ta.Anilist_id}</div>)} */}
+                {trackedAnime.map(series => (
+                    <div key={series.Anilist_id} className="series-container">
+                        <img src={series.Cover_img} className="series-cover"/>
+                        <div className="series-title">{series.Eng_title ? series.Eng_title : series.Romaji_title}</div>
+                    </div>
+                ))}
             </div>
         </div>
     )

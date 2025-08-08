@@ -4,4 +4,4 @@ import {main} from '../models';
 
 export function GetTrackedAnimeAll():Promise<Array<main.TrackedAnimeTableRow>>;
 
-export function InsertTrackedAnime(arg1:number):Promise<void>;
+export function InsertTrackedAnime(arg1:number,arg2:string,arg3:string,arg4:string):Promise<void>;

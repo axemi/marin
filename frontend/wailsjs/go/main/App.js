@@ -6,6 +6,6 @@ export function GetTrackedAnimeAll() {
   return window['go']['main']['App']['GetTrackedAnimeAll']();
 }
 
-export function InsertTrackedAnime(arg1) {
-  return window['go']['main']['App']['InsertTrackedAnime'](arg1);
+export function InsertTrackedAnime(arg1, arg2, arg3, arg4) {
+  return window['go']['main']['App']['InsertTrackedAnime'](arg1, arg2, arg3, arg4);
 }

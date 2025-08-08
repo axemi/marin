@@ -37,8 +37,8 @@ func (a *App) startup(ctx context.Context) {
 	}
 }
 
-func (a *App) InsertTrackedAnime(anilist_id int) error {
-	err := insertTrackedAnime(a.db, anilist_id)
+func (a *App) InsertTrackedAnime(anilist_id int, cover_img, eng_title, romaji_title string) error {
+	err := insertTrackedAnime(a.db, anilist_id, cover_img, eng_title, romaji_title)
 	return err
 }
 
